@@ -8,3 +8,6 @@ const Video = props => {
         </div>
     )
 };
+
+
+let VideoNew = withData(Video);

@@ -5,12 +5,12 @@ const List = props => {
         switch (item.type) {
             case 'video':
                 return (
-                    <Video {...item} />
+                    <VideoNew {...item} />
                 );
 
             case 'article':
                 return (
-                    <Article {...item} />
+                    <ArticleNew {...item} />
                 );
         }
     });

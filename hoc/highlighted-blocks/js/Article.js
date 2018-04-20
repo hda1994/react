@@ -8,3 +8,5 @@ const Article = props => {
         </div>
     )
 };
+
+let ArticleNew = withData(Article);
