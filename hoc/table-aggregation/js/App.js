@@ -1,22 +1,64 @@
 'use strict';
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-const withData = (Component) => class extends React.Component {
+const withData = (Component, filt) => class extends React.Component {
   constructor(...props) {
     super(...props);
   }
   
   getList() {
-    return this.props.list.map(el => Object.assign(el, {year: el.date.substr(0, 4)}, {month: months[parseInt(el.date.substr(5, 2)) - 1]}));
+    return filt(this.props.list);
   }
   
   render() {
     return <Component {...this.props} list={this.getList()}/>;  
   }
 }
-let M = withData(MonthTable);
-let Y = withData(YearTable);
-let S = withData(SortTable);
+
+function monthFilt(list) {
+  let tmpList = months.map(el => Object.assign({}, {month: el}, {amount: 0}));
+  list.forEach(el => tmpList[parseInt(el.date.substr(5, 2)) - 1].amount += el.amount);
+  return tmpList;
+}
+
+function yearFilt(list) {
+  let tmp = [];
+  list.forEach(el => {
+    let check = parseInt(el.date.substr(0, 4));
+    if(!tmp.some(elem => elem.year === check)) {
+      tmp.push({year: check, amount: el.amount});
+    } else {
+      tmp.forEach(element => {
+        if(element.year === check) {
+          element.amount += el.amount;
+        }
+      });
+    }
+  });
+  return tmp;
+}
+
+function dateFilt(list) {
+  let tmp = [];
+  list.forEach(el => {
+    let check = el.date;
+    if(!tmp.some(elem => elem.date === check)) {
+      tmp.push({date: check, amount: el.amount});
+    } else {
+      tmp.forEach(element => {
+        if(element.date === check) {
+          element.amount += el.amount;
+        }
+      });
+    }
+  });
+  return tmp;
+}
+
+let M = withData(MonthTable, monthFilt);
+let Y = withData(YearTable, yearFilt);
+let S = withData(SortTable, dateFilt);
+
 
 
 class App extends React.Component {

@@ -1,14 +1,13 @@
 'use strict';
-//
-//const Popular = props => {
-//    return (
-//        <div className="wrap-item wrap-item-popular">
-//        <span className="label">Popular!</span>
-//        {props.children}
-//        </div>
-//    )
-//};
 
+const Popular = props => {
+    return (
+        <div className="wrap-item wrap-item-popular">
+        <span className="label">Popular!</span>
+        {props.children}
+        </div>
+    )
+};
 
 const withData = (Component) => class extends React.Component {
   constructor(...props) {
@@ -28,11 +27,17 @@ const withData = (Component) => class extends React.Component {
   
   render() {
     let {name} = this.state;
-    return name ?
-        (<div className={`wrap-item wrap-item-${name}`}>
-        <span className="label">{`${name}!`}</span>
-        <Component {...this.props}/>
-        </div>) : <Component {...this.props}/>;
+    if(name == 'popular') {
+      return (<Popular {...this.props}>
+        <Component {...this.props} />
+        </ Popular>);
+    } 
+    if(name == 'new') {
+      return (<New {...this.props}>
+        <Component {...this.props} />
+        </ New>);
+    }
+    return (<Component {...this.props} />);
     
   }
 }
