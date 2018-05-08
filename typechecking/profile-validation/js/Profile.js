@@ -27,3 +27,37 @@ const Profile = props => {
     </div>
   );
 };
+
+const urlType = (props, propName, componentName) => {
+  let tmp = props[propName];
+  let isTmp = (typeof tmp == 'string') && /^https:\/\/vk\.com\/(id[0-9]+|[A-Za-z0-9_-]+$)/.test(tmp);
+  return isTmp ? null : new Error(`Invalid ${propName} in ${componentName}: ${props.first_name} ${props.last_name}`);
+}
+
+const dateType = (props, propName, componentName) => {
+  let tmp = props[propName];
+  if(tmp == undefined){
+    return new Error(`${propName} is undefined in ${componentName}: ${props.first_name} ${props.last_name}`)
+  }
+  let isTmp = (typeof tmp == 'string') && /^[1-2][0-9]{3}-(1[0-2]|0[1-9])-(3[0-1]|[1-2][0-9]|0[1-9])$/.test(tmp);
+  
+  let w = tmp.split('-');
+	let x = new Date();
+  let now = new Date();
+	x.setFullYear(w[0]);
+	x.setMonth(w[1]);
+	x.setDate(w[2]);
+  if(x - now > 0){
+    return new Error(`Invalid ${propName} date is to biger (${x} > ${now}) in ${componentName}: ${props.first_name} ${props.last_name}`);
+  }
+  return isTmp ? null : new Error(`Invalid ${propName} in ${componentName}: ${props.first_name} ${props.last_name}`);
+}
+
+Profile.defaultProps = {
+  img: './images/profile.jpg'
+}
+
+Profile.propTypes = {
+  url: urlType,
+  birthday: dateType
+}

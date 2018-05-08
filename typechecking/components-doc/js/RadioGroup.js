@@ -16,3 +16,21 @@ const RadioGroup = props => {
     </div>
   )
 };
+
+//`
+    
+//const radioGroupType = (props, propName, componentName) => {
+//  if(props.type === 'text'){
+//    let tmp = props[propName];
+//    let isTmp = (typeof tmp == 'string') && /^[a-zA-ZА-Яа-я]+$/.test(tmp);
+//    return isTmp ? null : new Error(`${propName} in ${componentName}: ${tmp} expected abcde`);
+//  }
+//}
+
+RadioGroup.propTypes = {
+  value: PropTypes.string,
+  list: PropTypes.arrayOf(PropTypes.string),
+  required: PropTypes.bool,
+  name: PropTypes.string,
+  onChange: PropTypes.func
+};

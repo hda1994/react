@@ -42,14 +42,18 @@ const Form = (props) => {
   )
 };
 
+Form.defaultProps = {
+
+}
+
 Form.propTypes = {
   handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
 
-  email: PropTypes.number,
+  email: PropTypes.string.isRequired,
   first_name: PropTypes.string,
   last_name: PropTypes.string,
-  age: PropTypes.integer,
+  age: PropTypes.number.isRequired,
   nickname: PropTypes.string,
-  is_married: PropTypes.integer
+  is_married: PropTypes.bool
 };

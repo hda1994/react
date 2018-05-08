@@ -23,6 +23,7 @@ const Form = (props) => {
   )
 };
 
+
 Form.propTypes = {
   handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
@@ -34,3 +35,5 @@ Form.propTypes = {
   password: PropTypes.string,
   sex: PropTypes.oneOf(['муж', 'жен'])
 };
+
+
