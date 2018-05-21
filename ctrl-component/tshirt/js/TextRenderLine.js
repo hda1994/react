@@ -1,11 +1,11 @@
-class TextRenderLine extends React.Component {
-  onChange(event) {
-    this.props.onChange(event.currentTarget.value);
+
+const TextRenderLine = function ({value, onChange}){
+  function change(event) {
+    let tmp = event.currentTarget.value.toLowerCase().replace(/[^a-z\s]/,'');      
+    onChange(tmp);
   }
   
-  render() {
-    return (
-      <input style={{width: '50%', margin: '10px auto'}} type='text' value={this.props.value} onChange={this.onChange.bind(this)} />
+  return (
+      <textarea style={{width: '50%', margin: '10px auto'}} type='textarea' value={value} onChange={change} />
     );
-  }
 }
