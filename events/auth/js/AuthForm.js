@@ -1,35 +1,36 @@
 'use strict';
 
 const AuthForm = function ({onAuth}){
+  let tmp;
   
-  let user = {}
   let send = e => { 
     e.preventDefault();
-    if(typeof onAuth === 'function' && user.text !== undefined && user.password !== undefined && user.email !== undefined){
+    let user = {};
+    user.email = tmp.querySelector('input[type=email]').value;
+    user.name = tmp.querySelector('input[type=text]').value;
+    user.password = tmp.querySelector('input[type=password]').value;
+    if(typeof onAuth === 'function'){
       onAuth(user);
     }
+    else {
+      console.log(user);
+    } 
   }
-  function get(e) {
-    user[e.currentTarget.type] = e.currentTarget.value;
-  }
+
   function check(e) {
     let mask;
-    if(e.target.type === 'text'){
-      mask = /[.]/;
-    }
+    
     if(e.target.type === 'email'){
-      mask = /[^a-zA-z0-9_\-\.@]+/;
+      mask = /[^\w\-\.@]+/;
     }
     if(e.target.type === 'password'){
-      mask = /[^a-zA-z0-9_]+/;
+      mask = /[^\w]+/;
     }
     e.target.value = e.target.value.replace(mask,'');
-    get(e);
   }
   
-  
   return (
-  <form className="ModalForm" action="/404/auth/" method="POST">
+  <form ref={el => tmp = el} className="ModalForm" action="/404/auth/" method="POST" onSubmit={send}>
   <div className="Input">
     <input required type="text" placeholder="Имя" onChange={check}/>
     <label></label>
@@ -42,7 +43,7 @@ const AuthForm = function ({onAuth}){
     <input required required type="password" placeholder="Пароль" onChange={check}/>
     <label></label>
   </div>
-  <button type="submit" onSubmit={send} onClick={send}>
+  <button type="submit">
     <span>Войти</span>
     <i className="fa fa-fw fa-chevron-right"></i>
   </button>
