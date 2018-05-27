@@ -1,10 +1,4 @@
 'use strict';
-let recourse = [{ru: 'Мистер', en: 'mr', inp: true},
-                {ru: 'Мистер', en: 'mr', inp: false},
-                {ru: 'Мисис', en: 'mrs', inp: true},
-                {ru: 'Мисис', en: 'mrs', inp: false},
-                {ru: 'Мис', en: 'ms', inp: true},
-                {ru: 'Мис', en: 'ms', inp: false}];
 
 const FeedbackForm = function ({data, onSubmit}){
   let formNew = {
@@ -17,49 +11,47 @@ const FeedbackForm = function ({data, onSubmit}){
   };
   
   function firstRecourse(r) { 
-    if(r === data.salutation){
-      return true;
-    }
-    return false;
+    return r === data.salutation;
   }
   function firstSnacks(text){
-    for(let s of data.snacks){
-      if(s===text){
-        return true;
-      }
-    }
-    return false;
+    return data.snacks.includes(text);
   }
 
-  function send(event) {
+  function handleSubmit(event) {
     event.preventDefault();
+    
     let formData = {
-      salutation: formNew.salutation.querySelector('input[type=radio]:checked').value,
       name: formNew.name.value,
       subject: formNew.subject.value,
       message: formNew.message.value,
       email: formNew.email.value,
       snacks: []
     }
-    formNew.snacks.querySelectorAll('input[type=checkbox]:checked').forEach(e=>formData.snacks.push(e.value));
+    event.currentTarget.salutation.forEach(el => {
+      if(el.checked){
+        formData.salutation = el.value;
+      }
+    });
+    event.currentTarget.snacks.forEach(e => {
+      if(e.checked){
+        formData.snacks.push(e.value);
+      }
+    });
     console.log(formData);
     onSubmit(JSON.stringify(formData));
   }
   
-  return(<form className="content__form contact-form"  onSubmit={send}>
+  return(<form className="content__form contact-form"  onSubmit={handleSubmit}>
   <div className="testing">
     <p>Чем мы можем помочь?</p>
   </div>
   <div ref={elem => formNew.salutation = elem} className="contact-form__input-group">
-      {recourse.map(elem=>{
-         if(elem.inp){
-            return <input className="contact-form__input contact-form__input--radio" id={`salutation-${elem.en}`} name="salutation" type="radio" value={elem.ru} defaultChecked={firstRecourse(elem.ru)}/>
-          } //'
-          else {
-            return <label className="contact-form__label contact-form__label--radio" htmlFor={`salutation-${elem.en}`}>{elem.ru}</label>
-          }//`
-        })
-      } 
+            <input className="contact-form__input contact-form__input--radio" id="salutation-mr" name="salutation" type="radio" value="Мистер" defaultChecked={firstRecourse('Мистер')}/>
+            <label className="contact-form__label contact-form__label--radio" htmlFor="salutation-mr">Мистер</label>
+            <input className="contact-form__input contact-form__input--radio" id="salutation-mrs" name="salutation" type="radio" value="Мисис" defaultChecked={firstRecourse('Мисис')}/>
+            <label className="contact-form__label contact-form__label--radio" htmlFor="salutation-mrs">Мисис</label>
+            <input className="contact-form__input contact-form__input--radio" id="salutation-ms" name="salutation" type="radio" value="Мис" defaultChecked={firstRecourse('Мис')}/>
+            <label className="contact-form__label contact-form__label--radio" htmlFor="salutation-ms">Мис</label>
   </div>
   <div className="contact-form__input-group">
     <label className="contact-form__label" htmlFor="name">Имя</label>

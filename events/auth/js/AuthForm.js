@@ -3,12 +3,12 @@
 const AuthForm = function ({onAuth}){
   let tmp;
   
-  let send = e => { 
+  let handleSubmit = e => { 
     e.preventDefault();
     let user = {};
-    user.email = tmp.querySelector('input[type=email]').value;
-    user.name = tmp.querySelector('input[type=text]').value;
-    user.password = tmp.querySelector('input[type=password]').value;
+    user.email = e.currentTarget.email.value;
+    user.name = e.currentTarget.name.value;
+    user.password = e.currentTarget.password.value;
     if(typeof onAuth === 'function'){
       onAuth(user);
     }
@@ -17,7 +17,7 @@ const AuthForm = function ({onAuth}){
     } 
   }
 
-  function check(e) {
+  function checkValue(e) {
     let mask;
     
     if(e.target.type === 'email'){
@@ -30,17 +30,17 @@ const AuthForm = function ({onAuth}){
   }
   
   return (
-  <form ref={el => tmp = el} className="ModalForm" action="/404/auth/" method="POST" onSubmit={send}>
+  <form className="ModalForm" action="/404/auth/" method="POST" onSubmit={handleSubmit}>
   <div className="Input">
-    <input required type="text" placeholder="Имя" onChange={check}/>
+    <input required type="text" name="name" placeholder="Имя" />
     <label></label>
   </div>
   <div className="Input">
-    <input required type="email" placeholder="Электронная почта" onChange={check}/>
+    <input required type="email" name="email" placeholder="Электронная почта" onChange={checkValue}/>
     <label></label>
   </div>
   <div className="Input">
-    <input required required type="password" placeholder="Пароль" onChange={check}/>
+    <input required required type="password" name="password" placeholder="Пароль" onChange={checkValue}/>
     <label></label>
   </div>
   <button type="submit">
