@@ -12,14 +12,14 @@ const TextInput = props => {
 
 const textInputType = (props, propName, componentName) => {
   if(props.type === 'text'){
-    let tmp = props[propName];
-    let isTmp = (typeof tmp == 'string') && /^[a-zA-ZА-Яа-я]+$/.test(tmp);
-    return isTmp ? null : new Error(`${propName} in ${componentName}: ${tmp} expected abcde`);
+    let value = props[propName];
+    let isValid = (typeof value == 'string') && /^[a-zA-ZА-Яа-я]+$/.test(value);
+    return isValid ? null : new Error(`${propName} in ${componentName}: ${value} expected abcde`);
   }
   if(props.type === 'email'){
-    let tmp = props[propName];
-    let isTmp = (typeof tmp == 'string') && /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(tmp);
-    return isTmp ? null : new Error(`${propName} in ${componentName}: ${tmp} expected abc@abc.abc`);
+    let value = props[propName];
+    let isValid = (typeof value == 'string') && /^[A-Za-z0-9][A-Za-z0-9\._\-]*[A-Za-z0-9]*@([A-Za-z0-9]+([A-Za-z0-9\-]*[A-Za-z0-9]+)*\.)+[A-Za-z]{2,6}$/.test(value);
+    return isValid ? null : new Error(`${propName} in ${componentName}: ${value} expected abc@abc.abc`);
   }
 }
 

@@ -12,24 +12,24 @@ const DateInput = props => {
 
 
 const dateInputType = (props, propName, componentName) => {
-  let tmp = props[propName];
-  if(tmp == undefined || tmp == ''){
+  const value = props[propName];
+  if(value === undefined || value === ''){
     return new Error(`${propName} is undefined in ${componentName}`)
   }
-  let isTmp = (typeof tmp == 'string') && /^[1-2][0-9]{3}-(1[0-2]|0[1-9])-(3[0-1]|[1-2][0-9]|0[1-9])$/.test(tmp);
-  if(isTmp){
-    let w = tmp.split('-');
-    let x = new Date();
-    let now = new Date();
-    x.setFullYear(w[0]);
-    x.setMonth(w[1]);
-    x.setDate(w[2]);
-    if(x - now > 0){
-      return new Error(`Invalid ${propName} date is to biger (${x} > ${now}) in ${componentName}`);
+  const isValid = (typeof value === 'string') && /^[1-2][0-9]{3}-(1[0-2]|0[1-9])-(3[0-1]|[1-2][0-9]|0[1-9])$/.test(value);
+  if(isValid){
+    const stringDate = value.split('-');
+    let checkDate = new Date();
+    const nowDate = new Date();
+    checkDate.setFullYear(stringDate[0]);
+    checkDate.setMonth(stringDate[1]);
+    checkDate.setDate(stringDate[2]);
+    if(checkDate > nowDate){
+      return new Error(`Not a valid date ${propName}. ${componentName} date too large(${checkDate} > ${nowDate}).`);
     }
     return null;
   } 
-  return new Error(`Invalid ${propName} in ${componentName}: ${tmp} expected YYYY-MM-DD`);
+  return new Error(`Invalid ${propName} in ${componentName}: ${value} expected YYYY-MM-DD`);
 }
 
 let getNowDate = () => {
